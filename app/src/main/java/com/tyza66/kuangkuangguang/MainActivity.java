@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        //处理数据库
+        //获取数据库
         SQLiteHelper sqLiteHelper = new SQLiteHelper(this,"user.db",null,1);
         SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
         //js与原生Android交互
-        webView.addJavascriptInterface(new LocalJavaForJs(this,webView,db),"tyza66");
+        webView.setWebViewClient(new MyWebViewClient(this,webView,db));
     }
 }

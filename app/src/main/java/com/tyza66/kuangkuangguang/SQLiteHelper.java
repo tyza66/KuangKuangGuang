@@ -23,7 +23,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
             String date = sdf.format(new Date());
             sqLiteDatabase.execSQL("INSERT INTO floder VALUES('" + "d" + date + "','演示集合');");
-            sqLiteDatabase.execSQL("CREATE TABLE d" + date + "(id varchar2(20) PRIMARY KEY,title varclar2(100),text varchar2(500),statu int);" );
+            sqLiteDatabase.execSQL("CREATE TABLE d" + date + "(title varclar2(100),text varchar2(500),statu int);" );
             sqLiteDatabase.execSQL("INSERT INTO d" + date + " VALUES('演示标题1','演示内容1',0);");
             sqLiteDatabase.execSQL("INSERT INTO d" + date + " VALUES('演示标题2','演示内容2',0);");
             sqLiteDatabase.execSQL("INSERT INTO d" + date + " VALUES('演示标题3','演示内容3',0);");
@@ -32,7 +32,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             Log.d("sqLiteOnCreate", String.valueOf(e));
         }finally {
             sqLiteDatabase.endTransaction();
-            sqLiteDatabase.close();
         }
 
     }
