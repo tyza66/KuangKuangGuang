@@ -21,13 +21,25 @@
                         <div slot="header" class="clearfix">
                             <span class="title">快速入门</span>
                         </div>
-                        <div class="text item">1.点击"编辑"选项卡进行新建卡片</div>
+                        <div class="text item">1.点击"编辑"选项卡进行新建集合</div>
+                        <div class="text item">2.点击"新建集合"并输入新的集合名</div>
+                        <div class="text item">3.在"集合管理"对你想要编辑的集合进行操作</div>
+                        <div class="text item">4.点击"记忆"选项卡进行卡片记忆</div>
+                    </el-card>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span class="title">删除集合</span>
+                        </div>
+                        <div class="text item">使用中，为了减少误删集合的情况（集合一旦删除，内部的卡片将永久消失），在删除集合时需要输入结合管理表格中右侧蓝色字体的集合编号（不可复制），请确保输入的集合编号与你要删除的集合的编号相匹配！如若输则可能误删，若输入了无关内容，则崔其他集合不会影响。</div>
                     </el-card>
                     <el-card class="box-card">
                         <div slot="header" class="clearfix">
                             <span class="title">版本特性</span>
                         </div>
                         <div class="text item">1.在"记忆"界面，上方的滚动窗会随机出你的记忆卡片，碎片记忆，随机提醒。</div>
+                        <div class="text item">2.集合名限定最大长度为100个字符。(集合名不建议起名太长)</div>
+                        <div class="text item">3.卡片标题限定最大长度为100个字符。</div>
+                        <div class="text item">4.卡片内容限定最大长度为500个字符。</div>
                     </el-card>
                     <el-card class="box-card">
                         <div slot="header" class="clearfix">
@@ -71,8 +83,8 @@
                             <span class="title">编辑集合</span>
                         </div>
                         <div class="text item group">
-                            <el-button type="success">新建集合</el-button>
-                            <el-button type="danger">删除集合</el-button>
+                            <el-button type="success" @click="newFolder()">新建集合</el-button>
+                            <el-button type="danger" @click="deleteFolder()">删除集合</el-button>
                         </div>
                     </el-card>
                     <el-card class="box-card">
@@ -87,8 +99,8 @@
                                     </el-button>
                                 </div>
                                 <div class="text item">
-                                    <el-button type="primary">新建记录</el-button>
-                                    <el-button type="danger">删除记录</el-button>
+                                    <el-button type="primary" @click="newCard()">新建卡片</el-button>
+                                    <el-button type="danger">管理卡片</el-button>
                                 </div>
                             </el-card>
                         </div>
@@ -117,6 +129,9 @@
                         <div class="text item">账号：tyza66(洮羱芝闇)</div>
                         <div class="text item">主页：https://github.com/tyza66</div>
                         <div class="text item">本项目：https://github.com/tyza66/KuangKuangGuang</div>
+                        <div class="text item">
+                            项目模板：https://github.com/tyza66/KuangKuangGuangCausedFrameForAndoirdWebviewDevelopWithDAO
+                        </div>
                     </el-card>
                     <el-alert title="页面就到这里啦~" type="info" effect="dark"></el-alert>
                 </el-main>

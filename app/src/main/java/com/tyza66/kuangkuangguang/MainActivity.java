@@ -23,17 +23,11 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/home.html");
-        webView.setWebViewClient(new WebViewClient(){
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
         //获取数据库
         SQLiteHelper sqLiteHelper = new SQLiteHelper(this,"user.db",null,1);
         SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
         //js与原生Android交互
         webView.setWebViewClient(new MyWebViewClient(this,webView,db));
+        webView.addJavascriptInterface(new LocalJavaForJs(this,webView,db),"tyza66");
     }
 }

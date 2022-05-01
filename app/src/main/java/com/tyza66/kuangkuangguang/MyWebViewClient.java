@@ -19,6 +19,11 @@ public class MyWebViewClient extends WebViewClient {
     public void onPageFinished(WebView webView, String url) {
         webView.addJavascriptInterface(new LocalJavaForJs(context,webView,db),"tyza66");
     }
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        view.loadUrl(url);
+        return true;
+    }
 
 }
 

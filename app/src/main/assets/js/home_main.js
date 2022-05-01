@@ -28,6 +28,35 @@ var app = new Vue({
         title: id
       };
       this.folders.push(one);
+    },
+    newFolder() {
+      layer.prompt({ title: '新建集合:请输入集合名', formType: 3 }, function (folderName, index) {
+        layer.close(index);
+        if (folderName.length > 500) {
+          layer.msg('集合名过长（集合名不可超过500个字符）');
+        } else if (folderName != "") {
+          window.tyza66.pushFolder(folderName);
+          layer.msg('集合' + folderName + '创建完成');
+          window.app.folders = [];
+          window.tyza66.pullFloder2();
+        }
+        else {
+          layer.msg('请输入集合名');
+        }
+      });
+    },
+    deleteFolder() {
+      layer.prompt({ title: '删除集合:请输入集合右侧蓝色编号', formType: 3 }, function (folderId, index) {
+        layer.close(index);
+        var code = window.tyza66.deleteFolder(folderId);
+        if (code = "1") {
+          layer.msg('集合' + folderId + '已被删除');
+          window.app.folders = [];
+          window.tyza66.pullFloder2();
+        } else {
+          layer.msg('删除失败，请检查集合是否存在');
+        }
+      });
     }
   }
 });
