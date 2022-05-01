@@ -1,12 +1,133 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/elementui.css">
+    <link rel="stylesheet" href="./css/layer.css">
+    <link rel="stylesheet" href="./css/home_main.css">
     <title>tyza66</title>
 </head>
+
 <body>
-    Hello,KuangKuangGuangCausedFrameForAndoirdWebviewDevelopWithDAO!
+    <div id="app">
+        <el-tabs type="card" class="demo-tabs" id="fix" v-cloak>
+            <el-tab-pane label="首页">
+                <el-main class="container">
+                    <el-alert title="框哐咣。简单，轻量，单机，卡片记忆软件！" type="success" effect="dark"></el-alert>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span class="title">快速入门</span>
+                        </div>
+                        <div class="text item">1.点击"编辑"选项卡进行新建卡片</div>
+                    </el-card>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span class="title">版本特性</span>
+                        </div>
+                        <div class="text item">1.在"记忆"界面，上方的滚动窗会随机出你的记忆卡片，碎片记忆，随机提醒。</div>
+                    </el-card>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span class="title">作者的话</span>
+                        </div>
+                        <div class="text item">感谢使用我们的软件！</div>
+                        <div class="text item">各种技术每天都在更新迭代。</div>
+                        <div class="text item">各种需求更是五花八门。</div>
+                        <div class="text item">希望我们可以越做越好！</div>
+                        <div class="text item">请再多给我一颗小星星吧！</div>
+                        <div class="text item">您的支持就是我最大的动力！</div>
+                    </el-card>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span class="title">版本更新日志</span>
+                        </div>
+                        <el-table :data="upData" style="width: 100%">
+                            <el-table-column prop="date" label="日期" width="100"></el-table-column>
+                            <el-table-column prop="version" label="版本号" width="100"></el-table-column>
+                            <el-table-column prop="info" label="更新说明"></el-table-column>
+                        </el-table>
+                    </el-card>
+                    <el-alert title="页面就到这里啦~" type="info" effect="dark">
+                    </el-alert>
+                </el-main>
+            </el-tab-pane>
+            <el-tab-pane label="记忆">
+                <el-main v-loading="jiyiloading" class="container">
+                    <el-carousel :interval="4000" type="card" height="200px" indicator-position="none">
+                        <el-carousel-item v-for="item in 3" :key="item">
+                            <h3 class="medium">{{ item }}</h3>
+                        </el-carousel-item>
+                    </el-carousel>
+                    <el-alert title="页面就到这里啦~" type="info" effect="dark"></el-alert>
+                </el-main>
+            </el-tab-pane>
+            <el-tab-pane label="编辑">
+                <el-main class="container">
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span class="title">编辑集合</span>
+                        </div>
+                        <div class="text item group">
+                            <el-button type="success">新建集合</el-button>
+                            <el-button type="danger">删除集合</el-button>
+                        </div>
+                    </el-card>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span class="title">管理集合</span>
+                        </div>
+                        <div class="text item group" v-for="folder in folders">
+                            <el-card class="box-card">
+                                <div slot="header" class="clearfix">
+                                    <span class="title">{{folder.title}}</span>
+                                    <el-button style="float: right; padding: 3px 0" type="text">{{folder.id}}
+                                    </el-button>
+                                </div>
+                                <div class="text item">
+                                    <el-button type="primary">新建记录</el-button>
+                                    <el-button type="danger">删除记录</el-button>
+                                </div>
+                            </el-card>
+                        </div>
+                    </el-card>
+                    <el-alert title="页面就到这里啦~" type="info" effect="dark"></el-alert>
+                </el-main>
+            </el-tab-pane>
+            <el-tab-pane label="关于">
+                <el-main class="container">
+                    <div class="block" style="width: 160px; margin: 0 auto;">
+                        <el-image src="./img/logo.png"></el-image>
+                    </div>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span class="title">制作小组</span>
+                        </div>
+                        <div class="text item group">2022! 奇思妙想! Great Idea!</div>
+                        <div class="text item">想法(Ieda)：一只小鹦鹉</div>
+                        <div class="text item">程序(Program)：洮羱芝闇</div>
+                        <div class="text item">页面(View)：饿了么，一只小鹦鹉，洮羱芝闇</div>
+                    </el-card>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span class="title">Github开源仓库</span>
+                        </div>
+                        <div class="text item">账号：tyza66(洮羱芝闇)</div>
+                        <div class="text item">主页：https://github.com/tyza66</div>
+                        <div class="text item">本项目：https://github.com/tyza66/KuangKuangGuang</div>
+                    </el-card>
+                    <el-alert title="页面就到这里啦~" type="info" effect="dark"></el-alert>
+                </el-main>
+            </el-tab-pane>
+        </el-tabs>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script src="./js/elementui.js"></script>
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="./js/layer.js"></script>
+    <script src="./js/home_main.js"></script>
 </body>
+
 </html>
