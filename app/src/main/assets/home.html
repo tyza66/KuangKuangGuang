@@ -84,11 +84,23 @@
                                 <el-carousel :interval="4000" type="card" height="200px" indicator-position="none">
                                     <el-carousel-item class="medium" v-for="item in cardData" :key="item">
                                         <div>
-                                            <p class="title2">{{ item.title }}</p>
-                                            <p class="text2">{{ item.text }}</p>
+                                            <p class="title2" v-show="showTitle">{{ item.title }}</p>
+                                            <p class="text2" v-show="showText">{{ item.text }}</p>
                                         </div>
                                     </el-carousel-item>
                                 </el-carousel>
+                            </div>
+                        </el-card>
+                        <el-card class="box-card">
+                            <div slot="header" class="clearfix">
+                                <span class="title">卡片控制</span>
+                            </div>
+                            <div class="text item">
+                                <el-switch v-model="showTitle" active-text="隐藏标题" inactive-text="显示标题">
+                                </el-switch>
+                                <el-switch style="display: block" v-model="showText" active-color="#13ce66"
+                                    inactive-color="#ff4949" active-text="隐藏内容" inactive-text="显示内容">
+                                </el-switch>
                             </div>
                         </el-card>
                         <el-alert title="页面就到这里啦~" type="info" effect="dark"></el-alert>

@@ -26,7 +26,9 @@ var app = new Vue({
       title: 'g132323',
       text: '344111',
       statu: '111'
-    }]
+    }],
+    showTitle: true,
+    showText: true
   },
   created: function () {
     this.welcome();
