@@ -10,6 +10,10 @@ var app = new Vue({
       date: '2022-05-02',
       version: '0.1.1',
       info: '更新了集合操作'
+    },{
+      date: '2022-05-02',
+      version: '1.0.0',
+      info: '第一个发布版本'
     }],
     folders: [],
     newCard: {
