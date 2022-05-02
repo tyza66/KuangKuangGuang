@@ -30,7 +30,9 @@
                         <div slot="header" class="clearfix">
                             <span class="title">删除集合</span>
                         </div>
-                        <div class="text item">使用中，为了减少误删集合的情况（集合一旦删除，内部的卡片将永久消失），在删除集合时需要输入结合管理表格中右侧蓝色字体的集合编号（不可复制），请确保输入的集合编号与你要删除的集合的编号相匹配！如若输则可能误删，若输入了无关内容，则崔其他集合不会影响。</div>
+                        <div class="text item">
+                            使用中，为了减少误删集合的情况（集合一旦删除，内部的卡片将永久消失），在删除集合时需要输入结合管理表格中右侧蓝色字体的集合编号（不可复制），请确保输入的集合编号与你要删除的集合的编号相匹配！如若输则可能误删，若输入了无关内容，则崔其他集合不会影响。
+                        </div>
                     </el-card>
                     <el-card class="box-card">
                         <div slot="header" class="clearfix">
@@ -99,7 +101,7 @@
                                     </el-button>
                                 </div>
                                 <div class="text item">
-                                    <el-button type="primary" @click="newCard()">新建卡片</el-button>
+                                    <el-button type="primary" @click="createNewCard(folder.id)">新建卡片</el-button>
                                     <el-button type="danger">管理卡片</el-button>
                                 </div>
                             </el-card>
@@ -137,6 +139,19 @@
                 </el-main>
             </el-tab-pane>
         </el-tabs>
+        <el-dialog title="新建卡片" :visible.sync="newCard.dialogVisible" width="75%" :before-close="handleClose">
+            <span>
+                <el-input type="textarea" autosize placeholder="请输入卡片标题" v-model="newCard.title">
+                </el-input>
+                <div style="margin: 20px 0;"></div>
+                <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 10}" placeholder="请输入卡片内容" v-model="newCard.text">
+                </el-input>
+            </span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="newCard.dialogVisible = false">确 定</el-button>
+                <el-button @click="newCard.dialogVisible = false">取 消</el-button>
+            </span>
+        </el-dialog>
     </div>
     <script src="./js/vue.js"></script>
     <script src="./js/elementui.js"></script>

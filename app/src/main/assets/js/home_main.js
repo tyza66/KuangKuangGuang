@@ -7,7 +7,12 @@ var app = new Vue({
       version: '0.1.0',
       info: '测试版本'
     }],
-    folders: []
+    folders: [{ id: 123, title: 456 }],
+    newCard: {
+      dialogVisible: false,
+      title: '',
+      text: ''
+    }
   },
   created: function () {
     this.welcome();
@@ -57,6 +62,17 @@ var app = new Vue({
           layer.msg('删除失败，请检查集合是否存在');
         }
       });
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => { });
+    },
+    createNewCard(id) {
+      console.log(123);
+      this.newCard.dialogVisible = true;
     }
   }
 });
