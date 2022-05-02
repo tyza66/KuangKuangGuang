@@ -26,11 +26,7 @@ var app = new Vue({
       dialogVisible: false,
       nowId: ''
     },
-    cardData: [{
-      title: 'g132323',
-      text: '344111',
-      statu: '111'
-    }],
+    cardData: [],
     showTitle: true,
     showText: true
   },
