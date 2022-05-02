@@ -38,14 +38,6 @@
     align-items: center;
 }
 
-.el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 200px;
-    margin: 0;
-}
-
 .el-carousel__item:nth-child(2n) {
     background-color: #99a9bf;
 }
@@ -54,6 +46,35 @@
     background-color: #d3dce6;
 }
 
-/*编辑*/
+.title2 {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    width: 25rem;
+    height: 25px;
+    line-height: 25px;
+    white-space: nowrap;
+    table-layout: fixed;
+    word-break: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-/*关于*/
+.text2 {
+    width: 25rem;
+    margin-top: 10px;
+    text-align: center;
+    line-height: 20px;
+    white-space: normal;
+    table-layout: fixed;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 8;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+    /*编辑*/
+
+    /*关于*/

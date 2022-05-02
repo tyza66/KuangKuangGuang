@@ -24,14 +24,15 @@
                         <div class="text item">1.点击"编辑"选项卡进行新建集合</div>
                         <div class="text item">2.点击"新建集合"并输入新的集合名</div>
                         <div class="text item">3.在"集合管理"对你想要编辑的集合进行操作</div>
-                        <div class="text item">4.点击"记忆"选项卡进行卡片记忆</div>
+                        <div class="text item">4.在"集合管理"中找到你要记忆的卡片集合，点击“启用集合”按钮</div>
+                        <div class="text item">5.点击"记忆"选项卡进行卡片记忆</div>
                     </el-card>
                     <el-card class="box-card">
                         <div slot="header" class="clearfix">
                             <span class="title">删除集合</span>
                         </div>
                         <div class="text item">
-                            使用中，为了减少误删集合的情况（集合一旦删除，内部的卡片将永久消失），在删除集合时需要输入结合管理表格中右侧蓝色字体的集合编号（不可复制），请确保输入的集合编号与你要删除的集合的编号相匹配！如若输则可能误删，若输入了无关内容，则崔其他集合不会影响。
+                            使用中，为了减少误删集合的情况（集合一旦删除，内部的卡片将永久消失），在删除集合时需要输入集合管理表格中右侧蓝色字体的集合编号（不可复制），请确保输入的集合编号与你要删除的集合的编号相匹配！如若输则可能误删，若输入了无关内容，则崔其他集合不会影响。
                         </div>
                     </el-card>
                     <el-card class="box-card">
@@ -42,6 +43,9 @@
                         <div class="text item">2.集合名限定最大长度为100个字符。(集合名不建议起名太长)</div>
                         <div class="text item">3.卡片标题限定最大长度为100个字符。</div>
                         <div class="text item">4.卡片内容限定最大长度为500个字符。</div>
+                        <div class="text item">5.每个集合中不可有卡片名相同的卡片，若有相同的卡片则会影响到编辑和删除。</div>
+                        <div class="text item">6.卡片无编辑功能，若想编辑卡片内容，可以删除卡片并重新创建。</div>
+                        <div class="text item">7.在编辑完某个集合后，默认启用该集合。</div>
                     </el-card>
                     <el-card class="box-card">
                         <div slot="header" class="clearfix">
@@ -58,7 +62,7 @@
                         <div slot="header" class="clearfix">
                             <span class="title">版本更新日志</span>
                         </div>
-                        <el-table :data="upData" style="width: 100%">
+                        <el-table :data="versionData" style="width: 100%">
                             <el-table-column prop="date" label="日期" width="100"></el-table-column>
                             <el-table-column prop="version" label="版本号" width="100"></el-table-column>
                             <el-table-column prop="info" label="更新说明"></el-table-column>
@@ -70,12 +74,25 @@
             </el-tab-pane>
             <el-tab-pane label="记忆">
                 <el-main v-loading="jiyiloading" class="container">
-                    <el-carousel :interval="4000" type="card" height="200px" indicator-position="none">
-                        <el-carousel-item v-for="item in 3" :key="item">
-                            <h3 class="medium">{{ item }}</h3>
-                        </el-carousel-item>
-                    </el-carousel>
-                    <el-alert title="页面就到这里啦~" type="info" effect="dark"></el-alert>
+                    <el-alert title="您还没启用任何一个集合~" v-show="cardData.length==0" type="info" effect="dark"></el-alert>
+                    <div v-show="cardData.length!=0">
+                        <el-card class="box-card">
+                            <div slot="header" class="clearfix">
+                                <span class="title">卡片记忆</span>
+                            </div>
+                            <div class="text item">
+                                <el-carousel :interval="4000" type="card" height="200px" indicator-position="none">
+                                    <el-carousel-item class="medium" v-for="item in cardData" :key="item">
+                                        <div>
+                                            <p class="title2">{{ item.title }}</p>
+                                            <p class="text2">{{ item.text }}</p>
+                                        </div>
+                                    </el-carousel-item>
+                                </el-carousel>
+                            </div>
+                        </el-card>
+                        <el-alert title="页面就到这里啦~" type="info" effect="dark"></el-alert>
+                    </div>
                 </el-main>
             </el-tab-pane>
             <el-tab-pane label="编辑">
@@ -102,7 +119,8 @@
                                 </div>
                                 <div class="text item">
                                     <el-button type="primary" @click="createNewCard(folder.id)">新建卡片</el-button>
-                                    <el-button type="danger">管理卡片</el-button>
+                                    <el-button type="danger" @click="manageCard(folder.id)">管理卡片</el-button>
+                                    <el-button type="success" @click="useFolder(folder.id)">启用集合</el-button>
                                 </div>
                             </el-card>
                         </div>
@@ -141,15 +159,36 @@
         </el-tabs>
         <el-dialog title="新建卡片" :visible.sync="newCard.dialogVisible" width="75%" :before-close="handleClose">
             <span>
-                <el-input type="textarea" autosize placeholder="请输入卡片标题" v-model="newCard.title">
+                <el-input type="textarea" autosize placeholder="请输入卡片标题（每个集合中不可有重复标题）" v-model="newCard.title">
                 </el-input>
                 <div style="margin: 20px 0;"></div>
-                <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 10}" placeholder="请输入卡片内容" v-model="newCard.text">
+                <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 10}" placeholder="请输入卡片内容"
+                    v-model="newCard.text">
                 </el-input>
             </span>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="newCard.dialogVisible = false">确 定</el-button>
-                <el-button @click="newCard.dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="pushNewCard()">确 定</el-button>
+                <el-button @click="cancalNewCard()">取 消</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="管理卡片" :visible.sync="manageCards.dialogVisible" width="75%" :before-close="handleClose">
+            <span>
+                <el-table :data="cardData" height="250" border style="width: 100%">
+                    <el-table-column prop="title" label="标题" width="100">
+                    </el-table-column>
+                    <el-table-column prop="text" label="内容">
+                    </el-table-column>
+                    <el-table-column prop="statu" label="状态" width="50">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="deleteCard(scope.row)" type="text" size="small">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="manageCards.dialogVisible = false">完 成</el-button>
             </span>
         </el-dialog>
     </div>

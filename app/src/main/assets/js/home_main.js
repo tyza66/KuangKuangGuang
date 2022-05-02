@@ -2,17 +2,31 @@ var app = new Vue({
   el: "#app",
   data: {
     jiyiloading: true,
-    upData: [{
+    versionData: [{
       date: '2022-04-29',
       version: '0.1.0',
       info: '测试版本'
+    }, {
+      date: '2022-05-02',
+      version: '0.1.1',
+      info: '更新了集合操作'
     }],
-    folders: [{ id: 123, title: 456 }],
+    folders: [],
     newCard: {
       dialogVisible: false,
       title: '',
-      text: ''
-    }
+      text: '',
+      nowId: ''
+    },
+    manageCards: {
+      dialogVisible: false,
+      nowId: ''
+    },
+    cardData: [{
+      title: 'g132323',
+      text: '344111',
+      statu: '111'
+    }]
   },
   created: function () {
     this.welcome();
@@ -66,13 +80,79 @@ var app = new Vue({
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
+          this.newCard.title = '';
+          this.newCard.text = '';
           done();
         })
         .catch(_ => { });
     },
     createNewCard(id) {
-      console.log(123);
+      this.newCard.nowId = id;
       this.newCard.dialogVisible = true;
+    },
+    cancalNewCard() {
+      this.newCard.title = '';
+      this.newCard.text = '';
+      this.newCard.dialogVisible = false;
+    },
+    pushNewCard() {
+      if (this.newCard.title == "") {
+        layer.msg('标题不可为空');
+      } else if (this.newCard.title.length > 100) {
+        layer.msg('卡片标题过长（卡片标题不可超过100个字符）');
+      } else if (this.newCard.text.length > 500) {
+        layer.msg('卡片内容过长（卡片内容不可超过500个字符）');
+      } else {
+        window.tyza66.pushCard(this.newCard.nowId, this.newCard.title, this.newCard.text);
+        this.newCard.title = '';
+        this.newCard.text = '';
+        this.newCard.dialogVisible = false;
+        this.cardData = [];
+        window.tyza66.pullCards(id);
+        layer.msg('卡片已创建');
+      }
+    },
+    manageCard(id) {
+      this.manageCards.nowId = id;
+      this.cardData = [];
+      window.tyza66.pullCards(this.manageCards.nowId);
+      this.manageCards.dialogVisible = true;
+    },
+    deleteCard(card) {
+      this.$confirm('此操作将永久删除该卡片, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        window.tyza66.deleteCard(this.manageCards.nowId, card.title, card.text);
+        this.cardData = [];
+        window.tyza66.pullCards(this.manageCards.nowId);
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+    appendCardData(title, text, statu) {
+      var one = {
+        title: title,
+        text: text,
+        statu: statu
+      }
+      this.cardData.push(one);
+    },
+    useFolder(id) {
+      this.cardData = [];
+      window.tyza66.pullCards(id);
+      this.$message({
+        type: 'success',
+        message: '启用成功!'
+      });
     }
   }
 });

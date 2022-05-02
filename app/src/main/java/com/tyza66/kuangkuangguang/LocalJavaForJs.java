@@ -32,7 +32,6 @@ public class LocalJavaForJs {
 
     @JavascriptInterface
     public void pullFloder() {
-        Log.d("233", "pullFloder");
         Cursor cursor = db.query("floder", null, null, null, null, null, null);
         while (cursor.moveToNext()) {
             String id = cursor.getString(0);
@@ -49,7 +48,6 @@ public class LocalJavaForJs {
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                Log.d("233", "pullFloder");
                 Cursor cursor = db.query("floder", null, null, null, null, null, null);
                 while (cursor.moveToNext()) {
                     String id = cursor.getString(0);
@@ -79,12 +77,13 @@ public class LocalJavaForJs {
             db.endTransaction();
         }
     }
+
     @JavascriptInterface
     public String deleteFolder(String id) {
         String code = "1";
         db.beginTransaction();
         try {
-            db.execSQL("DELETE FROM floder WHERE id = '" + id +"';");
+            db.execSQL("DELETE FROM floder WHERE id = '" + id + "';");
             db.execSQL("DROP TABLE " + id);
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -94,5 +93,57 @@ public class LocalJavaForJs {
             db.endTransaction();
         }
         return code;
+    }
+
+    @JavascriptInterface
+    public String pushCard(String id, String title, String text) {
+        String code = "1";
+        db.beginTransaction();
+        try {
+            db.execSQL("INSERT INTO " + id + " VALUES('" + title + "','" + text + "',0);");
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d("sqLiteInsert", String.valueOf(e));
+            code = "0";
+        } finally {
+            db.endTransaction();
+        }
+        return code;
+    }
+
+    @JavascriptInterface
+    public String deleteCard(String table, String title, String text) {
+        String code = "1";
+        db.beginTransaction();
+        try {
+            //Log.d("sqLiteIDelete","DELETE FROM " + table + " WHERE title='" + title + "' AND text = '" + text + "';");
+            db.execSQL("DELETE FROM " + table + " WHERE title='" + title +"';");
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d("sqLiteIDelete", String.valueOf(e));
+            code = "0";
+        } finally {
+            db.endTransaction();
+        }
+        return code;
+    }
+
+    @JavascriptInterface
+    public void pullCards(String table) {
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Cursor cursor = db.query(table, null, null, null, null, null, null);
+                while (cursor.moveToNext()) {
+                    String title = cursor.getString(0);
+                    String text = cursor.getString(1);
+                    String statu = cursor.getString(2);
+                    webView.loadUrl("javascript:app.appendCardData('" + title + "','" + text + "','" + statu + "')");
+                }
+                cursor.close();
+            }
+        });
     }
 }
