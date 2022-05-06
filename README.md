@@ -15,4 +15,6 @@
 #### 【2022.5.2】v1.0.1
 - 更新了全屏（不显示手机状态栏）
 
+成品：https://github.com/tyza66/WorkCollection/tree/main/%E6%A1%86%E5%93%90%E5%92%A3%5BAndroid%5D%5B%E5%8E%9F%E5%88%9B%E8%BD%AF%E4%BB%B6%5D%5B%E5%B7%A5%E5%85%B7%5D
+
 By:tyza66(洮羱芝闇)
